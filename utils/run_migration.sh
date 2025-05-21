@@ -11,7 +11,7 @@
 ########################################################################################
 
 # Define the project root directory
-PROJECT_DIR="/Users/jurajpanek/Documents/code/portfolio_app_pg"
+PROJECT_DIR="/Users/jurajpanek/Documents/code/portfolio_app"
 
 # Check if the first parameter is provided
 if [ -z "$1" ]; then

@@ -109,7 +109,7 @@ class Trade(db.Model):  # Inherit from db.Model for Flask-SQLAlchemy
     id = db.Column(db.Integer, primary_key=True)
     symbol = db.Column(db.String(10), db.ForeignKey('instruments.symbol'), nullable=False)  # Foreign key to Instruments
     trade_date = db.Column(db.DateTime, nullable=False)  # Date of trade
-    volume = db.Column(db.Integer, nullable=False)  # Number of shares
+    volume = db.Column(db.Numeric(precision=18, scale=6), nullable=False) #number of shares, allow split shares
     trade_price = db.Column(db.Float, nullable=False)  # Price per share at trade time
     trade_type = db.Column(db.String(10), nullable=False)  # Type of trade (BUY/SELL)
     currency = db.Column(db.String(10), nullable=False)  # Currency of the trade

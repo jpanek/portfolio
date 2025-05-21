@@ -188,3 +188,107 @@ Loaded overall 22 records
 Execution time: 10 seconds
 
 Finished at 2025-05-21 12:00:12
+zsh: no such file or directory: lio_app/utils/load_prices.py
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 14:23:49 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Execution time: 123 seconds
+Traceback (most recent call last):
+  File "/Users/jurajpanek/Documents/code/portfolio_app/utils/load_prices.py", line 18, in <module>
+    refresh_prices(history)
+    ~~~~~~~~~~~~~~^^^^^^^^^
+  File "/Users/jurajpanek/Documents/code/portfolio_app/utils/pricing.py", line 154, in refresh_prices
+    cur.execute("""
+    ~~~~~~~~~~~^^^^
+        INSERT INTO prices (symbol, date, price, price_type, updated_date)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+            updated_date = CURRENT_TIMESTAMP;
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    """, (handle.ticker, date.strftime("%Y-%m-%d"), float(price)))
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/homebrew/Cellar/python@3.13/3.13.3/Frameworks/Python.framework/Versions/3.13/lib/python3.13/encodings/utf_8.py", line 15, in decode
+    def decode(input, errors='strict'):
+    
+KeyboardInterrupt
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 14:30:02 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Unexpected error for CSPX.L: canceling statement due to statement timeout
+CONTEXT:  while inserting index tuple (44,47) in relation "prices"
+
+Loading prices for CNDX.L starting from date: 2025-05-18
+Unexpected error for CNDX.L: current transaction is aborted, commands ignored until end of transaction block
+
+Loading prices for NVDA starting from date: 2025-05-18
+Unexpected error for NVDA: current transaction is aborted, commands ignored until end of transaction block
+
+Loading prices for VBTC.DE starting from date: 2025-05-18
+Unexpected error for VBTC.DE: current transaction is aborted, commands ignored until end of transaction block
+
+Loading prices for IDR=X starting from date: 2025-05-18
+Unexpected error for IDR=X: current transaction is aborted, commands ignored until end of transaction block
+
+Loading prices for EURUSD=X starting from date: 2025-05-18
+Unexpected error for EURUSD=X: current transaction is aborted, commands ignored until end of transaction block
+
+Loading prices for EURIDR=X starting from date: 2025-05-18
+Unexpected error for EURIDR=X: current transaction is aborted, commands ignored until end of transaction block
+
+Loading prices for MSFT starting from date: 2025-05-18
+Unexpected error for MSFT: current transaction is aborted, commands ignored until end of transaction block
+
+Loaded overall 0 records
+Execution time: 128 seconds
+
+Finished at 2025-05-21 14:32:10
+/Users/jurajpanek/Documents/code/portfolio_app
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 14:46:54 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-05-18
+Loaded 2 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-05-18
+Loaded 3 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-05-18
+Loaded 2 prices for ticker MSFT
+Loaded overall 22 records
+Execution time: 7 seconds
+
+Finished at 2025-05-21 14:47:01
+/Users/jurajpanek/Documents/code/portfolio_app
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 15:00:02 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-05-18
+Loaded 2 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-05-18
+Loaded 3 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-05-18
+Loaded 2 prices for ticker MSFT
+Loaded overall 22 records
+Execution time: 7 seconds
+
+Finished at 2025-05-21 15:00:10

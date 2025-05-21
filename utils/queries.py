@@ -30,13 +30,16 @@ and  t.symbol like '%=X'
 sql_trades_detail = """
 select 
  --cast(trade_id as text) as id,
- symbol as "Symbol", name as "Name", trade_price as "Trade Price", 
+ symbol as "Symbol", 
+ replace(name,'VII PLC ISHRS ','') as "Name", 
+ trade_price as "Trade Price", 
  date(trade_date) as "Trade Date",
  volume as "Volume", price as "Price", 
  day_change*100 as "Day pct",
  day_profit as "Day Profit", profit as "Profit", value as "Value", price_time as "Price time"
 from v_portfolio_overview 
 where portfolio_id = %s
+order by trade_date
 """
 
 sql_trades = """
