@@ -1,0 +1,124 @@
+<!-- templates/pl.html -->
+{% extends 'base.html' %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block content %}
+    <h2>Profit & Loss {{ period }} for {{ symbol }}</h2>
+
+    <!-- Chart.js and creation of chart-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+     <!-- Picker for dates & period -->
+    <div class="form-wrapper">
+        <div class="form-container">
+            <form action="{{ url_for('main.pl', symbol=symbol) }}" method="get">
+                
+                <label for="start_date" class="bold-label">Start Date:</label>
+                <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+
+                <label for="end_date" class="bold-label">End Date:</label>
+                <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+
+                <input type="submit" value="Filter">
+            </form>
+        </div>
+
+        <!-- Select the grouping level  -->
+        <div class="form-container narrow-container">
+            <form method="get">
+                <label for="period" class="bold-label">Period:</label>
+                <select id="period" onchange="location.href='/pl/{{ symbol }}?period=' + this.value">
+                    <option value="daily" {{ 'selected' if period == 'daily' else '' }}>Daily</option>
+                    <option value="monthly" {{ 'selected' if period == 'monthly' else '' }}>Monthly</option>
+                </select>
+            </form>        
+        </div>
+
+    </div>
+
+    <!-- Switch for P&L -->
+    <div class="centered-link-container">
+        <a href="{{ url_for('main.history', symbol=symbol) }}" class="centered-link-main">Switch to price view</a>
+    </div>  
+
+    <!-- Here goes the chart of the price -->
+    <div class="chart-container">
+        <canvas id="priceChart"></canvas>
+    </div>
+
+    <!-- Table with historical PL -->
+    <table class="table table-stripped table-hover table-bordered shadow-sm">
+        <thead class="table-primary">
+            <tr>
+                {% for column in column_names %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+                <tr>
+                    {% for value in row %}
+                    <td class="{% if value is number %}numeric{% endif %}">
+                        {{ "{:,.2f}".format(value) if value is number else value }}
+                    </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Link for trades -->
+    <div class="centered-link-container">
+        <a href="{{ url_for('main.trades') }}" class="centered-link">Back to Trades</a>
+    </div>
+    <!-- Link for home -->
+    <div class="centered-link-container">
+        <a href="{{ url_for('main.index') }}" class="centered-link">Back to Home</a>
+    </div>
+
+    <!-- Script to generate the charts: -->
+    <script>
+        var ctx = document.getElementById('priceChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ chart_dates | tojson }},
+                datasets: [
+                    {
+                        label: 'P&L Cumulative',
+                        data: {{ chart_pl_cum | tojson }},
+                        borderColor: 'blue',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'P&L {{ period }}',
+                        data: {{ chart_pl_day | tojson }},
+                        type: 'bar', // Display as bars
+                        backgroundColor: '#bfbfbf',
+                        yAxisID: 'y-right'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Date' } },
+                    y: {
+                    id: 'y-left',
+                    title: { display: true, text: 'Cumulative P&L' },
+                    position: 'left'
+                    },
+                    'y-right': {
+                        title: { display: true, text: 'PL {{ period }}' },
+                        position: 'right',
+                        grid: { drawOnChartArea: false } // Avoid grid overlap
+                    }
+                }
+            }
+        });
+    </script>
+
+{% endblock %}

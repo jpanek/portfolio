@@ -1,0 +1,313 @@
+<!-- templates/add_trade.html -->
+{% extends 'base.html' %}
+
+{% block title %}Manage Trades{% endblock %}
+
+{% block content %}
+
+    <!-- Picker for portfolio -->
+    <div class="container mt-3 mb-3">
+        <div class="w-25 mx-auto">
+            <label for="portfolio" class="form-label fw-bold">Portfolio:</label>
+            <select id="portfolio" class="form-select" onchange="updateParam('portfolio', this.value)">
+                <option value="all" {{ 'selected' if not portfolio_id else '' }}>Overall</option>
+                {% for p in portfolios %}
+                    <option value="{{ p.id }}" {{ 'selected' if portfolio_id == p.id else '' }}>{{ p.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <!-- Display the trades under selected portoflios -->
+    <table class="table table-stripped table-hover table-bordered shadow-sm">
+        <thead class="table-primary">
+            <tr>
+                {% for col in columns %}
+                    <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for trade in trades %}
+            <tr onclick="editTrade({{ trade['id'] }}, '{{ trade['symbol'] }}', '{{ trade['trade_date'] }}', {{ trade['volume'] }}, {{ trade['trade_price']}}, {{ trade['portfolio_id'] }})">
+                {% for col in columns %}
+                    <td>
+                        {% if col == 'trade_date' %}
+                            {{ trade.trade_date.strftime('%Y-%m-%d') }}
+                        {% else %}
+                            {{ trade[col] }}
+                        {% endif %}
+                    </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Modal for editing a trade -->
+    <div class="modal fade" id="editTradeModal" tabindex="-1" aria-labelledby="editTradeModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editTradeModalLabel">Edit Trade</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editTradeForm">
+                        <div class="mb-3">
+                            <label for="editTradeSymbol" class="form-label">Symbol:</label>
+                            <input type="text" class="form-control" id="editTradeSymbol" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTradeDate" class="form-label">Trade Date:</label>
+                            <input type="date" class="form-control" id="editTradeDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTradeVolume" class="form-label">Volume:</label>
+                            <input type="number" class="form-control" id="editTradeVolume" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="editTradePrice" class="form-label">Price:</label>
+                            <input type="number" class="form-control" id="editTradePrice" step="any" required>
+                        </div>
+                        <!-- Portfolio Select Dropdown -->
+                        <div class="mb-3">
+                            <label for="editTradePortfolioId" class="form-label">Select Portfolio:</label>
+                            <select class="form-select" id="editTradePortfolioId" required>
+                                <option value="">Select a portfolio</option>
+                                {% for portfolio in portfolios %}
+                                    <option value="{{ portfolio.id }}">{{ portfolio.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <input type="hidden" id="editTradeId">
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">Save Changes</button>
+                        </div>
+                        <div class="d-grid mt-2">
+                            <button type="button" class="btn btn-danger" id="deleteTradeBtn">Delete Trade</button>
+                        </div>
+                    </form>
+                    <div id="editTradeResponse" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Form for inputting a new trades -->
+    <h2>Adding a new trade: </h2>
+    <div class="container mt-4">
+        <div class="card p-4 shadow">
+            <form id="trade-form">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="symbol" class="form-label">Symbol</label>
+                        <input type="text" id="symbol" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="trade_date" class="form-label">Trade Date</label>
+                        <input type="date" id="trade_date" class="form-control" required value="{{ today_date }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="volume" class="form-label">Volume</label>
+                        <input type="number" id="volume" class="form-control" required>
+                    </div>
+                </div>
+    
+                <div class="row g-3 mt-2">
+                    <div class="col-md-4">
+                        <label for="trade_price" class="form-label">Trade Price</label>
+                        <input type="number" step="0.01" id="trade_price" class="form-control" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="trade_type" class="form-label">Trade Type</label>
+                        <select id="trade_type" class="form-select">
+                            <option value="BUY">BUY</option>
+                            <option value="SELL">SELL</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="currency" class="form-label">Currency</label>
+                        <select id="currency" class="form-select" required>
+                            <option value="USD">USD</option>
+                            <option value="EUR">EUR</option>
+                            <option value="CZK">CZK</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="row g-3 mt-2">
+                    <div class="col-md-6">
+                        <label for="portfolio_input" class="form-label">Portfolio</label>
+                        <select id="portfolio_input" class="form-select">
+                            {% for portfolio in portfolios %}
+                                <option value="{{ portfolio.id }}">{{ portfolio.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="mt-4 text-center">
+                    <button type="submit" class="btn btn-primary">Add Trade</button>
+                    <button type="button" class="btn btn-secondary" onclick="localStorage.clear(); location.reload();">Clear Form</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Result for inputting a new trade -->
+    <div id="responseDiv-trade"></div>
+
+    <!-- Function to edit an existing trades  -->
+    <script>
+        // Function to open the modal and populate it with existing data
+        function editTrade(id, symbol, trade_date, volume, trade_price, portfolio_id) {
+            // Set the values in the modal form
+            console.log('Modal triggered ...');
+            document.getElementById('editTradeSymbol').value = symbol;
+            document.getElementById('editTradeDate').value = trade_date.split(" ")[0];  // Extract date part from datetime
+            document.getElementById('editTradeVolume').value = volume;
+            document.getElementById('editTradePrice').value = trade_price;
+            document.getElementById('editTradePortfolioId').value = portfolio_id;
+            document.getElementById('editTradeId').value = id;
+
+            // Show the modal
+            $('#editTradeModal').modal('show');
+        }
+
+        // Handle the delete button of a trade from modal
+        document.getElementById('deleteTradeBtn').addEventListener('click', function() {
+            let tradeId = document.getElementById('editTradeId').value;
+            console.log('Delete triggered for trade_id: ' + tradeId);
+
+            fetch(`/manage/delete_trade/${tradeId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                //alert(data.message);
+                location.reload(); // Reload page after deletion
+            })
+            .catch(error => console.error('Error:', error));
+        });        
+
+        // Handle form submission for editing trade
+        document.getElementById('editTradeForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Disable the form and show loading indicator
+            document.getElementById('editTradeResponse').innerHTML = '<p>Updating trade...</p>';
+            let formData = {
+                id: document.getElementById('editTradeId').value,
+                symbol: document.getElementById('editTradeSymbol').value,
+                trade_date: document.getElementById('editTradeDate').value,
+                volume: document.getElementById('editTradeVolume').value,
+                trade_price: document.getElementById('editTradePrice').value,
+                portfolio_id: document.getElementById('editTradePortfolioId').value
+            };
+
+            console.log('Edit submitted for trade_id: ' + formData.id);
+
+            fetch(`/manage/edit_trade/${formData.id}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle success
+                if (data.message) {
+                    document.getElementById('editTradeResponse').innerHTML = `<p style="color: green;">${data.message}</p>`;
+                    setTimeout(() => {
+                        $('#editTradeModal').modal('hide');
+                        location.reload(); // Reload page after successful edit
+                    }, 1500);
+                } else if (data.error) {
+                    // Handle error
+                    document.getElementById('editTradeResponse').innerHTML = `<p style="color: red;">${data.error}</p>`;
+                }
+            })
+            .catch(error => {
+                document.getElementById('editTradeResponse').innerHTML = '<p style="color: red;">Error: ' + error.message + '</p>';
+            });
+        });
+    </script>
+    
+
+
+    <!-- Function that inputs a new trades  -->
+    <script>
+        // Process the trade form to input a new trade: Calling /add_trade route
+        document.getElementById('trade-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            console.log(document.getElementById('portfolio_input').value);
+
+            let tradeData = {
+                symbol: document.getElementById('symbol').value,
+                trade_date: document.getElementById('trade_date').value,
+                volume: parseInt(document.getElementById('volume').value),
+                trade_price: parseFloat(document.getElementById('trade_price').value),
+                trade_type: document.getElementById('trade_type').value,
+                currency: document.getElementById('currency').value,
+                portfolio: document.getElementById('portfolio_input').value
+            };
+            fetch('/manage/add_trade', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(tradeData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                //console.log(data); // Check if data.message or data.error is received
+                let responseDiv = document.getElementById('responseDiv-trade'); // Ensure this div exists in your HTML
+                responseDiv.innerHTML = ''; // Clear previous messages
+                
+                const messagePara = document.createElement('p');
+                messagePara.innerText = data.message || data.error;
+                messagePara.style.textAlign = "center"; // Center the text
+                messagePara.style.fontWeight = "bold"; 
+                messagePara.style.color = data.message ? "green" : "red"; // Green for success, red for error
+                responseDiv.appendChild(messagePara);
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+
+    <!-- Function to keep the form prefilled after a refresh -->
+    <script>
+        //Keep the prefilled form in place after a refresh
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get input elements
+            let inputs = document.querySelectorAll("#trade-form input, #trade-form select");
+    
+            // Restore saved values
+            inputs.forEach(input => {
+                let savedValue = localStorage.getItem(input.id);
+                if (savedValue) {
+                    input.value = savedValue;
+                }
+            });
+    
+            // Save values on change
+            inputs.forEach(input => {
+                input.addEventListener("input", function() {
+                    localStorage.setItem(input.id, input.value);
+                });
+            });
+        });
+    </script>
+
+    <!-- Script to switch after get parameter change -->
+    <script>
+        function updateParam(key, value) {
+            const params = new URLSearchParams(window.location.search);
+            params.set(key, value); 
+            window.location.href = window.location.pathname + '?' + params.toString();
+        }
+    </script>
+{% endblock %}

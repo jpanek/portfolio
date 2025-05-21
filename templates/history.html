@@ -1,0 +1,107 @@
+<!-- templates/history.html -->
+{% extends 'base.html' %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block content %}
+
+    <h2>Price history for {{ symbol }}</h2>
+    
+    <!-- Chart.js and creation of chart-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Form picker for Start and End Date -->
+    <div class="container">
+        <div class="row justify-content-center g-3 align-items-end">
+            <!-- Start Date -->
+            <div class="col-md-3">
+                <label for="start_date" class="form-label">Start Date:</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ start_date }}" 
+                       onchange="updateParam('start_date', this.value)">
+            </div>
+    
+            <!-- End Date -->
+            <div class="col-md-3">
+                <label for="end_date" class="form-label">End Date:</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ end_date }}" 
+                       onchange="updateParam('end_date', this.value)">
+            </div>
+        </div>
+    </div>
+
+    <!-- Switch for P&L -->
+    <div class="centered-link-container">
+        <a href="{{ url_for('main.pl', symbol=symbol) }}" class="centered-link-main">Switch to PL view</a>
+    </div>
+
+    <!-- Here goes the chart of the price -->
+    <div class="chart-container">
+        <canvas id="priceChart"></canvas>
+    </div>
+
+    <!-- Table with historical prices -->
+    <table class="table table-stripped table-hover table-bordered shadow-sm">
+        <thead class="table-primary">
+            <tr>
+                {% for column in column_names %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+                <tr>
+                    {% for value in row %}
+                    <td class="{% if value is number %}numeric{% endif %}">
+                        {{ "{:,.2f}".format(value) if value is number else value }}
+                    </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+    <!-- Link for trades -->
+    <div class="centered-link-container">
+        <a href="{{ url_for('main.trades') }}" class="centered-link">Back to Trades</a>
+    </div>
+
+    <!-- Link for home -->
+    <div class="centered-link-container">
+        <a href="{{ url_for('main.index') }}" class="centered-link">Back to Home</a>
+    </div>
+
+    <!-- Script to generate the charts: -->
+    <script>
+        var ctx = document.getElementById('priceChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ chart_dates | tojson }},
+                datasets: [{
+                    label: 'Stock Price',
+                    data: {{ chart_prices | tojson }},
+                    borderColor: 'blue',
+                    borderWidth: 2,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Date' } },
+                    y: { title: { display: true, text: 'Price' } }
+                }
+            }
+        });
+    </script>
+
+    <!-- Script to switch forms for Period & Portfolio -->
+    <script>
+        function updateParam(key, value) {
+            const params = new URLSearchParams(window.location.search);
+            params.set(key, value); 
+            window.location.href = window.location.pathname + '?' + params.toString();
+        }
+    </script>
+{% endblock %}

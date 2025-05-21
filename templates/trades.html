@@ -1,0 +1,63 @@
+<!-- templates/trades.html -->
+{% extends 'base.html' %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block content %}
+    <script>
+        function redirectToLink(row) {
+            window.location.href = row.getAttribute("data-url");
+        }
+    </script>
+
+
+        {% for portfolio_name, trade_info in trades_by_portfolio.items() %}
+
+            <h2>Summary of Portfolio: {{ portfolio_name }}</h2>
+            <table class="table table-stripped table-hover table-bordered shadow-sm">
+                <thead class="table-primary">
+                    <tr>
+                        {% for column in trade_info.columns_sum %}
+                            <th>{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in trade_info.data_sum %}
+                        <tr data-url="{{ url_for('main.pl_all') }}?portfolio={{ trade_info.portfolio_id }}" onclick="redirectToLink(this)">
+                            {% for value in row %}
+                                <td class="{% if value is number %}numeric{% endif %}">
+                                    {{ "{:,.2f}".format(value) if value is number else value }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h3>Trades under Portfolio: {{ portfolio_name }}</h3>
+            <table class="table table-stripped table-hover table-bordered shadow-sm">
+                <thead class="table-primary">
+                    <tr>
+                        {% for column in trade_info.columns %}
+                            <th>{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in trade_info.data %}
+                        <tr data-url="{{ url_for('main.history', symbol=row[0]) }}" onclick="redirectToLink(this)">
+                            {% for value in row %}
+                                <td class="{% if value is number %}numeric{% endif %}">
+                                    {{ "{:,.2f}".format(value) if value is number else value }}
+                                </td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div style="height: 10px;"></div>
+        {% endfor %}
+
+{% endblock %}

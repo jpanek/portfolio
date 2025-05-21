@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Table view</title>
+        <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+    </head>
+    <body>
+        <script>
+            function redirectToHistory(row) {
+                window.location.href = row.getAttribute("data-url");
+            }
+        </script>
+        <h2>Listed Stocks</h2>
+        <!-- Second table - the old formatting-->
+        <table border="1">
+            <thead>
+                <tr>
+                    {% for column in column_names %}
+                        <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr data-url="{{ url_for('main.history', symbol=row[0]) }}" onclick="redirectToHistory(this)">
+                        {% for value in row %}
+                            <td class="{% if value is number %}numeric{% endif %}">
+                                {{ "{:,.2f}".format(value) if value is number else value }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+        <h2>Listed Currencies</h2>
+        <!-- Second table - the old formatting-->
+        <table border="1">
+            <thead>
+                <tr>
+                    {% for column in column_names %}
+                        <th>{{ column }}</th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data_ccy %}
+                <tr data-url="{{ url_for('main.history', symbol=row[0]) }}" onclick="redirectToHistory(this)">
+                        {% for value in row %}
+                            <td class="{% if value is number %}numeric{% endif %}">
+                                {{ "{:,.3f}".format(value) if value is number else value }}
+                            </td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="centered-link-container">
+            <a href="{{ url_for('main.trades') }}" class="centered-link">View Trades</a>
+        </div>
+    </body>
+</html>

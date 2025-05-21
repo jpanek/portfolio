@@ -1,0 +1,36 @@
+<!-- templates/index.html -->
+{% extends 'base.html' %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block content %}
+    <script>
+        function redirectToHistory(row) {
+            window.location.href = row.getAttribute("data-url");
+        }
+    </script>
+
+    <h2>Listed Currencies</h2>
+    <!-- Second table for currencies-->
+    <table class="table table-stripped table-hover table-bordered shadow-sm">
+        <thead class="table-primary">
+            <tr>
+                {% for column in column_names %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data_ccy %}
+                <tr data-url="{{ url_for('main.history', symbol=row[0]) }}" onclick="redirectToHistory(this)">
+                    {% for value in row %}
+                        <td class="{% if value is number %}numeric{% endif %}">
+                            {{ "{:,.3f}".format(value) if value is number else value }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

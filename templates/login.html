@@ -1,0 +1,63 @@
+<!-- templates/login.html -->
+{% extends 'base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+
+    <!-- Display Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <div class="container d-flex justify-content-center">
+        <div class="card shadow-lg" style="width: 100%; max-width: 400px;">
+            <div class="card-body">
+                <h4 class="card-title text-center mb-3">Login</h4>
+                <form method="POST" action="{{ url_for('auth.login', next=request.args.get('next', '')) }}">
+                    <div class="mb-2">
+                        <label for="username" class="form-label">Username:</label>
+                        <input type="text" class="form-control" name="username" required>
+                    </div>
+    
+                    <div class="mb-3">
+                        <label for="password" class="form-label">Password:</label>
+                        <input type="password" class="form-control" name="password" required>
+                    </div>
+    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </div>
+                </form>
+    
+                <div class="mt-3 text-center">
+                    <span>Don't have an account? </span>
+                    <a href="{{ url_for('auth.register') }}" class="btn btn-outline-primary btn-sm">Register</a>
+                </div>
+            </div>
+        </div>
+    </div>    
+
+{% endblock %}
+
+<div class="form-container">
+    <form method="POST" action="{{ url_for('auth.login', next=request.args.get('next', '')) }}">
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br>
+        
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br>
+        
+        <button type="submit">Login</button>
+    </form>
+</div>
+
+<div class="d-flex justify-content-center">
+    <a class="btn btn-primary" href="{{ url_for('auth.register') }}">Register</a>
+</div>

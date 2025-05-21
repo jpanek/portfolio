@@ -1,0 +1,165 @@
+<!-- templates/trades.html -->
+{% extends 'base.html' %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block content %}
+
+    <!-- Chart.js and creation of chart-->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <h2>Profit & Loss {{ period }} {{ portfolio_name if portfolio_name else "Overall" }}</h2>
+
+    <!-- Selections for report: Stard & End date, Period, Portfolio -->
+    <div class="container">
+        <div class="row g-3 align-items-end">
+            <!-- Start Date -->
+            <div class="col-md-3">
+                <label for="start_date" class="form-label">Start Date:</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ start_date }}" 
+                       onchange="updateParam('start_date', this.value)">
+            </div>
+    
+            <!-- End Date -->
+            <div class="col-md-3">
+                <label for="end_date" class="form-label">End Date:</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ end_date }}" 
+                       onchange="updateParam('end_date', this.value)">
+            </div>
+    
+            <!-- Period -->
+            <div class="col-md-3">
+                <label for="period" class="form-label">Period:</label>
+                <select id="period" class="form-select" onchange="updateParam('period', this.value)">
+                    <option value="daily" {{ 'selected' if period == 'daily' else '' }}>Daily</option>
+                    <option value="monthly" {{ 'selected' if period == 'monthly' else '' }}>Monthly</option>
+                </select>
+            </div>
+    
+            <!-- Portfolio -->
+            <div class="col-md-3">
+                <label for="portfolio" class="form-label">Portfolio:</label>
+                <select id="portfolio" class="form-select" onchange="updateParam('portfolio', this.value)">
+                    <option value="all" {{ 'selected' if not portfolio else '' }}>Overall</option>
+                    {% for p in portfolios %}
+                        <option value="{{ p.id }}" {{ 'selected' if portfolio == p.id else '' }}>{{ p.name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-container">
+        <canvas id="priceChart"></canvas>
+    </div>
+
+    <!-- Table with values -->
+    <table class="table table-stripped table-hover table-bordered shadow-sm" id="sortableTable">
+        <thead class="table-primary">
+            <tr>
+                {% for column in column_names %}
+                    <th onclick="sortTable({{ loop.index0 }})">{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+                <tr>
+                    {% for value in row %}
+                        <td class="{% if value is number %}numeric{% endif %}">
+                            {{ "{:,.2f}".format(value) if value is number else value }}
+                        </td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Function: create chart -->
+    <script>
+        var ctx = document.getElementById('priceChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ chart_dates | tojson }},
+                datasets: [
+                    {
+                        label: 'P&L Cumulative',
+                        data: {{ chart_pl_period | tojson }},
+                        borderColor: 'blue',
+                        borderWidth: 2,
+                        fill: false
+                    },
+                    {
+                        label: 'P&L {{ period }}',
+                        data: {{ chart_pl_day | tojson }},
+                        type: 'bar', // Display as bars
+                        backgroundColor: '#bfbfbf'
+                        //yAxisID: 'y-right'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    x: { title: { display: true, text: 'Date' } },
+                    y: {
+                    id: 'y-left',
+                    title: { display: true, text: 'P&L {{ period }}' },
+                    position: 'left'
+                    },
+                    'y-right': {
+                        title: { display: true, text: 'Overall P&L' },
+                        position: 'right',
+                        grid: { drawOnChartArea: false } // Avoid grid overlap
+                    }
+                }
+            }
+        });
+    </script>
+
+    <!-- Script to add sorting option to the table -->
+    <script>
+        function sortTable(colIndex) {
+            let table = document.getElementById("sortableTable");
+            let tbody = table.querySelector("tbody");
+            let rows = Array.from(tbody.rows);
+            let headers = table.querySelectorAll("th");
+            let isAscending = headers[colIndex].dataset.order !== "asc"; 
+        
+            // Reset all headers
+            headers.forEach(header => header.innerHTML = header.innerText.replace(" ▲", "").replace(" ▼", ""));
+        
+            rows.sort((rowA, rowB) => {
+                let cellA = rowA.cells[colIndex].innerText.trim();
+                let cellB = rowB.cells[colIndex].innerText.trim();
+        
+                // Check if the content is numeric (for numeric sorting)
+                if (!isNaN(cellA) && !isNaN(cellB)) {
+                    return isAscending ? parseFloat(cellA) - parseFloat(cellB) : parseFloat(cellB) - parseFloat(cellA);
+                }
+                return isAscending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+            });
+        
+            // Toggle sorting order
+            headers[colIndex].dataset.order = isAscending ? "asc" : "desc";
+            headers[colIndex].innerHTML += isAscending ? " ▲" : " ▼"; // Append arrow
+        
+            // Clear and reinsert sorted rows
+            tbody.innerHTML = "";
+            rows.forEach(row => tbody.appendChild(row));
+        }
+        
+    </script>
+
+    <!-- Script to switch forms for Period & Portfolio -->
+    <script>
+        function updateParam(key, value) {
+            const params = new URLSearchParams(window.location.search);
+            params.set(key, value); 
+            window.location.href = window.location.pathname + '?' + params.toString();
+        }
+    </script>
+
+{% endblock %}

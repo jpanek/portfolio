@@ -1,0 +1,20 @@
+<!-- templates/index.html -->
+{% extends 'base.html' %}
+
+{% block title %}Portfolio{% endblock %}
+
+{% block content %}
+    
+    <div style="height: 30px;"></div>
+
+    <div class="centered-link-container">
+        <a href="{{ url_for('manage.portfolio') }}" class="centered-link">Manage Portfolios</a>
+    </div>
+
+    <div style="height: 30px;"></div>
+
+    <div class="centered-link-container">
+        <a href="{{ url_for('main.trades') }}" class="centered-link">Manage Trades</a>
+    </div>
+   
+{% endblock %}

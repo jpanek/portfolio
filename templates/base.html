@@ -1,0 +1,150 @@
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}My Website{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- jQuery and Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#">Portfolio</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.index') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.trades') }}">Trades</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.pl_all') }}">P&L</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('main.ccy') }}">Currencies</a></li>
+                    
+                    <!-- Manage Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Manage
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('manage.manage_portfolio') }}">Portfolio</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('manage.manage_trades') }}">Trades</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            User
+                        </a>
+                        {% if current_user.is_authenticated %}
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ url_for('user.index') }}">User: {{ current_user.name }}</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
+                            </ul>
+                        {% else %}
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="{{ url_for('auth.login', next=request.path) }}">Login</a></li>
+                                <li><a class="dropdown-item" href="{{ url_for('auth.register') }}">Register</a></li>
+                            </ul>
+                        {% endif %}
+                    </li>
+                    
+                    {% if current_user.is_admin %}
+                        <li class="nav-item"><a class="nav-link" href="#" id="refresh-prices-link">Refresh prices</a></li>
+                    {% endif %}
+
+                    <!-- Display the latest update date -->
+                    {% if g.latest_updated_date %}
+                        <li class="nav-item ms-auto"><span class="nav-link">Last update: {{ g.latest_updated_date }}</span></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Modal for displaying the message -->
+    <div id="popup" style="display:none;">
+        <div class="popup-content">
+            <p id="popup-message"></p>
+            <button onclick="closePopup()">Close</button>
+            <button id="refresh-page" >Reload</button>
+        </div>
+    </div>
+
+    <!-- Page content -->
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
+    </div>
+
+
+    <!-- Function to refresh prices and show loading ... -->
+    <script>
+        document.getElementById('refresh-prices-link').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent the default link action (if any)
+            
+            const button = event.target;
+        
+            // Create a fixed-width container for loading text
+            const loadingContainer = document.createElement('span');
+            loadingContainer.classList.add('navbar-item-loading');  // Use the new class
+            loadingContainer.innerHTML = 'Loading'; // Initial text without dots
+            
+            button.innerHTML = ''; // Clear existing button content
+            button.appendChild(loadingContainer); // Append the loading container
+            
+            let dotCount = 0;
+            const interval = setInterval(function() {
+                dotCount = (dotCount + 1) % 4; // Cycle through 0 to 3 dots
+                loadingContainer.innerHTML = 'Loading' + '.'.repeat(dotCount); // Add dots dynamically
+            }, 300); // Every 300ms, update the dots
+            
+            fetch('/trigger_function', {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Display the popup with the message
+                const popupMessage = document.getElementById('popup-message');
+                if (popupMessage) {
+                    popupMessage.innerText = data.message; // Ensure popup-message element exists
+                    document.getElementById('popup').style.display = 'flex';
+                }
+        
+                // Restore button text and remove spinner
+                clearInterval(interval); // Stop the dot loading animation
+                button.innerHTML = 'Refresh prices'; // Restore original text
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                clearInterval(interval); // Stop the dot loading animation
+                button.innerHTML = 'Error occurred, try again';
+            });
+        });
+        
+        
+        function closePopup() {
+            document.getElementById('popup').style.display = 'none';
+        }
+        
+        document.getElementById('refresh-page').addEventListener('click', function() {
+            location.reload(); // Reload the page
+        });
+    </script>
+    
+    <footer class="text-center text-muted py-3 mt-5 border-top">
+        &copy; {{ current_year }} by MFCC
+    </footer>
+
+</body>
+</html>

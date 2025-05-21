@@ -1,0 +1,1 @@
+/Users/jurajpanek/Documents/code/portfolio_app/venv/bin/python /Users/jurajpanek/Documents/code/portfolio_app/utils/load_prices.py
