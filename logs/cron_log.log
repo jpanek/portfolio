@@ -292,3 +292,252 @@ Loaded overall 22 records
 Execution time: 7 seconds
 
 Finished at 2025-05-21 15:00:10
+$NVDA: possibly delisted; no price data found  (period=1d)
+$MSFT: possibly delisted; no price data found  (period=1d)
+/Users/jurajpanek/Documents/code/portfolio_app
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 15:30:02 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CNDX.L
+Warning: No price data found for NVDA. It might be delisted or market is closed.
+Loading prices for NVDA starting from date: 2025-05-18
+Skipping NVDA due to missing price data.
+Loading prices for VBTC.DE starting from date: 2025-05-18
+Loaded 3 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURIDR=X
+Warning: No price data found for MSFT. It might be delisted or market is closed.
+Loading prices for MSFT starting from date: 2025-05-18
+Skipping MSFT due to missing price data.
+Loaded overall 18 records
+Execution time: 8 seconds
+
+Finished at 2025-05-21 15:30:10
+/Users/jurajpanek/Documents/code/portfolio_app
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 16:00:02 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-05-18
+Loaded 3 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-05-18
+Loaded 3 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-05-18
+Loaded 3 prices for ticker MSFT
+Loaded overall 24 records
+Execution time: 8 seconds
+
+Finished at 2025-05-21 16:00:10
+/Users/jurajpanek/Documents/code/portfolio_app
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 16:30:02 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-05-18
+Loaded 2 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-05-18
+Loaded 3 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-05-18
+Loaded 3 prices for ticker MSFT
+Loaded overall 23 records
+Execution time: 8 seconds
+
+Finished at 2025-05-21 16:30:10
+/Users/jurajpanek/Documents/code/portfolio_app
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 17:00:02 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-05-18
+Loaded 2 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-05-18
+Loaded 3 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-05-18
+Loaded 3 prices for ticker MSFT
+Loaded overall 23 records
+Execution time: 7 seconds
+
+Finished at 2025-05-21 17:00:09
+/Users/jurajpanek/Documents/code/portfolio_app
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 17:30:02 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-05-18
+Loaded 3 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-05-18
+Loaded 3 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-05-18
+Loaded 3 prices for ticker MSFT
+Loaded overall 24 records
+Execution time: 8 seconds
+
+Finished at 2025-05-21 17:30:09
+/Users/jurajpanek/Documents/code/portfolio_app
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 18:00:02 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-05-18
+Loaded 3 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-05-18
+Loaded 3 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-05-18
+Loaded 3 prices for ticker MSFT
+Loaded overall 24 records
+Execution time: 7 seconds
+
+Finished at 2025-05-21 18:00:09
+/Users/jurajpanek/Documents/code/portfolio_app
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 18:30:03 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-05-18
+Loaded 3 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-05-18
+Loaded 3 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-05-18
+Loaded 3 prices for ticker MSFT
+Loaded overall 24 records
+Execution time: 7 seconds
+
+Finished at 2025-05-21 18:30:10
+/Users/jurajpanek/Documents/code/portfolio_app
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 19:00:02 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-05-18
+Loaded 3 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-05-18
+Loaded 3 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-05-18
+Loaded 3 prices for ticker MSFT
+Loaded overall 24 records
+Execution time: 8 seconds
+
+Finished at 2025-05-21 19:00:09
+/Users/jurajpanek/Documents/code/portfolio_app
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-21 19:30:02 
+
+Loading prices for CSPX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-05-18
+Loaded 3 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-05-18
+Loaded 3 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-05-18
+Loaded 3 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-05-18
+Loaded 3 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-05-18
+Loaded 3 prices for ticker MSFT
+Loaded overall 24 records
+Execution time: 8 seconds
+
+Finished at 2025-05-21 19:30:10
+$CSPX.L: possibly delisted; no price data found  (period=1d)
+$CNDX.L: possibly delisted; no price data found  (period=1d)
+$VBTC.DE: possibly delisted; no price data found  (period=1d)
+--------------------------------------------------------------------------
+Loading of prices started at 2025-05-22 09:00:02 
+
+Warning: No price data found for CSPX.L. It might be delisted or market is closed.
+Loading prices for CSPX.L starting from date: 2025-05-19
+Skipping CSPX.L due to missing price data.
+Warning: No price data found for CNDX.L. It might be delisted or market is closed.
+Loading prices for CNDX.L starting from date: 2025-05-19
+Skipping CNDX.L due to missing price data.
+Loading prices for NVDA starting from date: 2025-05-19
+Loaded 3 prices for ticker NVDA
+Warning: No price data found for VBTC.DE. It might be delisted or market is closed.
+Loading prices for VBTC.DE starting from date: 2025-05-19
+Skipping VBTC.DE due to missing price data.
+Loading prices for IDR=X starting from date: 2025-05-19
+Loaded 4 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-05-19
+Loaded 4 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-05-19
+Loaded 4 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-05-19
+Loaded 3 prices for ticker MSFT
+Loaded overall 18 records
+Execution time: 6 seconds
+
+Finished at 2025-05-22 09:00:09

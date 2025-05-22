@@ -4,7 +4,6 @@ from datetime import datetime
 
 # Get the parent folder (one level up)
 parent_dir = Path(__file__).resolve().parent.parent
-print(parent_dir)
 sys.path.insert(0, str(parent_dir))
 
 from pricing import refresh_prices
