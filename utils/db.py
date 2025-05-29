@@ -14,7 +14,10 @@ def get_db_connection():
 
 def get_sqlalchemy_engine():
     """Returns a SQLAlchemy engine (for use with pandas, etc.)."""
-    return create_engine(DevConfig.SQLALCHEMY_DATABASE_URI)
+    return create_engine(
+        DevConfig.SQLALCHEMY_DATABASE_URI,
+        pool_pre_ping=True
+    )
 
 def sql_to_table(query=None, params=None):
     if query is None:

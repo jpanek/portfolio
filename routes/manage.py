@@ -59,17 +59,20 @@ def manage_trades():
     if request.method == 'GET':
 
         portfolio_id = request.args.get('portfolio',type=int)
-        print(portfolio_id)
 
         if portfolio_id:
-            print(f'Portfolio {portfolio_id} selected')
+            #print(f'Portfolio {portfolio_id} selected')
             trades = Trade.query.filter_by(portfolio_id=portfolio_id).all()
         else:
-            print(f'No portfolio selected')
-            trades = Trade.query.join(Portfolio).filter(Portfolio.user_id == current_user.id).all()
-
-        for trade in trades:
-            print(trade.trade_date)
+            #print(f'No portfolio selected')
+            #trades = Trade.query.join(Portfolio).filter(Portfolio.user_id == current_user.id).all()
+            trades = (
+                Trade.query
+                .join(Portfolio)
+                .filter(Portfolio.user_id == current_user.id)
+                .order_by(Trade.trade_date)
+                .all()
+            )
 
         columns = Trade.__table__.columns.keys() 
         portfolios = Portfolio.query.filter_by(user_id=current_user.id).all()

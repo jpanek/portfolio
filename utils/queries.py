@@ -19,7 +19,7 @@ select
  t.name as Name,
  p.price as Price,
  p.date as "Price Date",
- p.updated_date AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Prague' as "Updated time"
+ TO_CHAR(p.updated_date AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Prague', 'YYYY-MM-DD HH24:MI:SS') as "Updated time"
 from instruments t
 left join v_stock_prices_last p
     on p.symbol = t.symbol
@@ -34,7 +34,12 @@ select
  replace(name,'VII PLC ISHRS ','') as "Name", 
  trade_price as "Trade Price", 
  date(trade_date) as "Trade Date",
- volume as "Volume", price as "Price", 
+ --volume as "Volume", 
+ CASE
+    WHEN volume = floor(volume) THEN round(volume)
+    ELSE volume
+ END AS Volume,
+ price as "Price", 
  day_change*100 as "Day pct",
  day_profit as "Day Profit", profit as "Profit", value as "Value", price_time as "Price time"
 from v_portfolio_overview 
@@ -118,7 +123,7 @@ sql_pl_all_start="""
 select 
 {place_holder} as "Date",
 sum(pl) as "PL Daily",
-SUM(SUM(pl)) OVER (ORDER BY date) AS "PL Period",
+SUM(SUM(pl)) OVER (ORDER BY {place_holder}) AS "PL Period",
 sum(pl_cum) as "PL Total"
 from v_trades_pl
 where 0=0

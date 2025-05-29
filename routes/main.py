@@ -199,19 +199,20 @@ def pl_all(portfolio=None):
 
     if period == "monthly":
         query = modify_query(query,'month_end')
-        params[0] = '2023-01-01'
+        #params[0] = '2023-01-01'
     else:
         period = 'daily'
         query = modify_query(query,'date')
-    
-    print(query)
 
     curr.execute(query,params)
     data = curr.fetchall()
     columns = [desc[0] for desc in curr.description]
 
     #prepare data for Chart:
-    chart_dates = [row[0] for row in data]
+    if period == "daily":
+        chart_dates = [row[0].strftime("%Y-%m-%d") for row in data]
+    else:
+        chart_dates = [row[0] for row in data]
     chart_pl_day = [row[1] for row in data]
     chart_pl_period = [row[2] for row in data]
     chart_pl_total = [row[3] for row in data]
