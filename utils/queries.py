@@ -28,6 +28,42 @@ and  t.symbol like '%=X'
 """
 
 sql_trades_detail = """
+with portfolio as (
+SELECT 
+ t.symbol,
+ i.name,
+ t.trade_price,
+ t.volume,
+ t.trade_date,
+ p.price,
+ case 
+     when date(t.trade_date) = date('now') then (p.price-t.trade_price)*t.volume
+     when p.date = date('now') then (p.price - p.previous_price)*t.volume
+     else 0
+ end as day_profit,
+ case 
+     when date(t.trade_date) = date('now') then (p.price-t.trade_price)/t.trade_price
+     when p.date = date('now') then (p.price - p.previous_price)/p.previous_price
+     else 0
+ end as day_change,
+ (p.price - t.trade_price)*t.volume as profit,
+ p.price*t.volume as value,
+ CASE 
+    WHEN p.date = CURRENT_DATE THEN to_char(p.price_time AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Prague', 'HH24:MI:SS') 
+    ELSE p.date::text 
+ END AS price_time,
+ prt.name as portfolio,
+ prt.id as portfolio_id,
+ prt.user_id,
+ t.id as trade_id 
+FROM trades t
+join v_stock_prices_last p
+    on t.symbol = p.symbol
+join instruments i
+    on i.symbol = t.symbol 
+join portfolio prt 
+    on prt.id = t.portfolio_id
+)
 select 
  --cast(trade_id as text) as id,
  symbol as "Symbol", 
@@ -42,12 +78,49 @@ select
  price as "Price", 
  day_change*100 as "Day pct",
  day_profit as "Day Profit", profit as "Profit", value as "Value", price_time as "Price time"
-from v_portfolio_overview 
+--from v_portfolio_overview 
+from portfolio
 where portfolio_id = %s
 order by trade_date
 """
 
 sql_trades = """
+with portfolio as (
+SELECT 
+ t.symbol,
+ i.name,
+ t.trade_price,
+ t.volume,
+ t.trade_date,
+ p.price,
+ case 
+     when date(t.trade_date) = date('now') then (p.price-t.trade_price)*t.volume
+     when p.date = date('now') then (p.price - p.previous_price)*t.volume
+     else 0
+ end as day_profit,
+ case 
+     when date(t.trade_date) = date('now') then (p.price-t.trade_price)/t.trade_price
+     when p.date = date('now') then (p.price - p.previous_price)/p.previous_price
+     else 0
+ end as day_change,
+ (p.price - t.trade_price)*t.volume as profit,
+ p.price*t.volume as value,
+ CASE 
+    WHEN p.date = CURRENT_DATE THEN to_char(p.price_time AT TIME ZONE 'UTC' AT TIME ZONE 'Europe/Prague', 'HH24:MI:SS') 
+    ELSE p.date::text 
+ END AS price_time,
+ prt.name as portfolio,
+ prt.id as portfolio_id,
+ prt.user_id,
+ t.id as trade_id 
+FROM trades t
+join v_stock_prices_last p
+    on t.symbol = p.symbol
+join instruments i
+    on i.symbol = t.symbol 
+join portfolio prt 
+    on prt.id = t.portfolio_id
+)
 select 
  date('now') as Date,
  sum(volume*trade_price) as Investment,
@@ -56,7 +129,8 @@ select
  sum(day_profit) as "Day Profit",
  (sum(volume*price)/sum(volume*trade_price)-1)*100   as "Overall pct",
  sum(profit)    as "Profit"
-from v_portfolio_overview
+--from v_portfolio_overview
+from portfolio
 where portfolio_id = %s
 """
 

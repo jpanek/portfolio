@@ -5,19 +5,23 @@ from config import DevConfig
 
 def get_db_connection():
     """Returns a psycopg2 connection (for manual SQL execution)."""
-    return psycopg2.connect(
+    conn = psycopg2.connect(
         host=DevConfig.HOST,
         dbname=DevConfig.DBNAME,
         user=DevConfig.USER,
         password=DevConfig.PASSWORD
     )
+    conn.autocommit = True
+    return conn
 
 def get_sqlalchemy_engine():
     """Returns a SQLAlchemy engine (for use with pandas, etc.)."""
-    return create_engine(
+    engine = create_engine(
         DevConfig.SQLALCHEMY_DATABASE_URI,
-        pool_pre_ping=True
+        pool_pre_ping=True,  # checks connection before using
+        pool_recycle=280     # optional: recycle connections every ~5 minutes
     )
+    return engine
 
 def sql_to_table(query=None, params=None):
     if query is None:
