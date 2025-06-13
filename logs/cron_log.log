@@ -5195,3 +5195,101 @@ Loaded overall 28 records
 Execution time: 16 seconds
 
 Finished at 2025-06-12 17:30:19
+--------------------------------------------------------------------------
+Loading of prices started at 2025-06-12 19:00:03 
+
+Loading prices for CSPX.L starting from date: 2025-06-09
+Loaded 3 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-06-09
+Loaded 3 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-06-09
+Loaded 3 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-06-09
+Loaded 3 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-06-09
+Loaded 4 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-06-09
+Loaded 4 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-06-09
+Loaded 4 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-06-09
+Loaded 4 prices for ticker MSFT
+Loaded overall 28 records
+Execution time: 47 seconds
+
+Finished at 2025-06-12 19:00:49
+$CSPX.L: possibly delisted; no price data found  (period=1d)
+$CNDX.L: possibly delisted; no price data found  (period=1d)
+$VBTC.DE: possibly delisted; no price data found  (period=1d)
+--------------------------------------------------------------------------
+Loading of prices started at 2025-06-13 09:00:03 
+
+Warning: No price data found for CSPX.L. It might be delisted or market is closed.
+Loading prices for CSPX.L starting from date: 2025-06-10
+Skipping CSPX.L due to missing price data.
+Warning: No price data found for CNDX.L. It might be delisted or market is closed.
+Loading prices for CNDX.L starting from date: 2025-06-10
+Skipping CNDX.L due to missing price data.
+Loading prices for NVDA starting from date: 2025-06-10
+Loaded 3 prices for ticker NVDA
+Warning: No price data found for VBTC.DE. It might be delisted or market is closed.
+Loading prices for VBTC.DE starting from date: 2025-06-10
+Skipping VBTC.DE due to missing price data.
+Loading prices for IDR=X starting from date: 2025-06-10
+Loaded 4 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-06-10
+Loaded 4 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-06-10
+Loaded 4 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-06-10
+Loaded 3 prices for ticker MSFT
+Loaded overall 18 records
+Execution time: 7 seconds
+
+Finished at 2025-06-13 09:00:10
+--------------------------------------------------------------------------
+Loading of prices started at 2025-06-13 10:00:02 
+
+Loading prices for CSPX.L starting from date: 2025-06-10
+Loaded 2 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-06-10
+Loaded 2 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-06-10
+Loaded 3 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-06-10
+Loaded 2 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-06-10
+Loaded 4 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-06-10
+Loaded 4 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-06-10
+Loaded 4 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-06-10
+Loaded 3 prices for ticker MSFT
+Loaded overall 24 records
+Execution time: 8 seconds
+
+Finished at 2025-06-13 10:00:10
+--------------------------------------------------------------------------
+Loading of prices started at 2025-06-13 10:30:03 
+
+Loading prices for CSPX.L starting from date: 2025-06-10
+Loaded 2 prices for ticker CSPX.L
+Loading prices for CNDX.L starting from date: 2025-06-10
+Loaded 2 prices for ticker CNDX.L
+Loading prices for NVDA starting from date: 2025-06-10
+Loaded 3 prices for ticker NVDA
+Loading prices for VBTC.DE starting from date: 2025-06-10
+Loaded 2 prices for ticker VBTC.DE
+Loading prices for IDR=X starting from date: 2025-06-10
+Loaded 4 prices for ticker IDR=X
+Loading prices for EURUSD=X starting from date: 2025-06-10
+Loaded 4 prices for ticker EURUSD=X
+Loading prices for EURIDR=X starting from date: 2025-06-10
+Loaded 4 prices for ticker EURIDR=X
+Loading prices for MSFT starting from date: 2025-06-10
+Loaded 3 prices for ticker MSFT
+Loaded overall 24 records
+Execution time: 7 seconds
+
+Finished at 2025-06-13 10:30:10
