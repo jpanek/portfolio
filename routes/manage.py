@@ -82,6 +82,8 @@ def manage_trades():
     if request.method == 'POST':
         '''Adding a new trade here below with all checks:'''
         data = request.json
+
+        print('adding new trade here .....')
         
         try:
             symbol = data['symbol']
@@ -175,8 +177,8 @@ def delete_trade(trade_id):
 @login_required  # Protect this route with authentication
 def add_trade():
 
-    if not current_user.is_admin:  # Example condition
-        return "Access denied", 403
+    #if not current_user.is_admin:  # Example condition
+        #return "Access denied", 403
 
     if request.method == 'GET':
         # Get available portfolios for current user:
