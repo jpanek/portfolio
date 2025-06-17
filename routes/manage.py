@@ -34,8 +34,8 @@ def delete_portfolio(portfolio_id):
 @login_required
 def add_portfolio():
 
-    if not current_user.is_admin:  # Example condition
-        return "Access denied", 403
+    #if not current_user.is_admin:  # Example condition
+    #    return "Access denied", 403
     
     data = request.get_json()
     portfolio_name = data.get('portfolio_name')
