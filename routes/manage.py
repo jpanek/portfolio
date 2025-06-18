@@ -207,19 +207,24 @@ def add_trade():
                 db.session.commit()
                 print(f"Instrument {symbol} created.")
 
-            #Step3: Check if there is a price for the Instrument
+            #Step3: Get the trade date:
+            print(data['trade_date'])
+            trade_date = datetime.strptime(data['trade_date'], '%Y-%m-%d')
+
+            #Step4: Check if there is a price for the Instrument
             price = db.session.query(Price).filter_by(symbol=symbol).first()
 
             if not price:
                 print(f"Prices for {symbol} are not available in the prices table")
 
-                history = 60
-                print(f"Loading prices to db for {symbol} for last {history} days")
-                refresh_prices(history_days=history,symbol=symbol)
+                today = datetime.today()
 
-            #Step4: Add the new trade now:
-            print(data['trade_date'])
-            trade_date = datetime.strptime(data['trade_date'], '%Y-%m-%d')
+                history_days = (today - trade_date).days + 30
+
+                print(f"Loading prices to db for {symbol} for last {history_days} days")
+                refresh_prices(history_days=history_days,symbol=symbol)
+
+            #Step5: Load the trade
             
             print(data['trade_date'])
             print(trade_date)
