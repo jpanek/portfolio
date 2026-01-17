@@ -38,5 +38,5 @@ def create_app():
 # This is for running the app directly
 if __name__ == '__main__':
     app = create_app()  # Create the app instance
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT', 5002))
     app.run(host='0.0.0.0', port=port, debug=True)
