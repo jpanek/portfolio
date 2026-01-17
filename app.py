@@ -1,3 +1,5 @@
+# app.py
+
 import os 
 from flask import Flask
 from config import DevConfig
@@ -12,6 +14,8 @@ from routes.user import user_bp
 
 from dotenv import load_dotenv
 load_dotenv()
+
+app = create_app()
 
 # Initialize app creation function
 def create_app():
