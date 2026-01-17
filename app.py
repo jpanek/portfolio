@@ -15,8 +15,6 @@ from routes.user import user_bp
 from dotenv import load_dotenv
 load_dotenv()
 
-app = create_app()
-
 # Initialize app creation function
 def create_app():
     app = Flask(__name__)
@@ -38,6 +36,8 @@ def create_app():
 
     return app
 
+
+app = create_app()
 
 # This is for running the app directly
 if __name__ == '__main__':
