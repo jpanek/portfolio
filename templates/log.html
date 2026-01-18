@@ -1,0 +1,18 @@
+<!-- templates/log.html -->
+
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-3">System Log</h2>
+   
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <pre style="background: #f4f4f4; padding: 15px; border: 1px solid #ddd; overflow-x: auto; white-space: pre-wrap; font-size: 0.85rem; border-radius: 5px;">{{ content }}</pre>
+</div>
+{% endblock %}

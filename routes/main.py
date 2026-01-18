@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, jsonify, request, abort
+from flask import Blueprint, render_template, jsonify, request, abort, current_app
 from flask_login import login_required, current_user
 from utils.db import sql_to_table, get_db_connection
 from utils.queries import sql_stocks, sql_ccy, sql_history, sql_trades_detail, sql_trades, sql_pl, sql_pl_month, sql_pl_all_start, sql_pl_all_end 
@@ -7,7 +7,9 @@ from utils.pricing import refresh_prices, position
 from config import get_today
 from models.models import Portfolio, Trade, Instrument, Price
 from extensions import db
-from datetime import datetime
+from datetime import datetime, timedelta
+import os
+from collections import deque
 
 
 main_bp = Blueprint('main',__name__)
@@ -180,8 +182,7 @@ def pl_all(portfolio=None):
     portfolio = portfolio if portfolio else Portfolio()
 
     if not start_date:
-        start_date = '2025-01-01'
-
+        start_date = (datetime.today() - timedelta(days=60)).strftime('%Y-%m-%d')
     if not end_date:
         end_date = get_today()
     
@@ -234,3 +235,16 @@ def pl_all(portfolio=None):
                            )
 
 
+@main_bp.route('/log')
+@main_bp.route('/log')
+def view_logs():
+    log_path = os.path.join(current_app.root_path, 'logs', 'cron_log.log')
+    content = "Log file not found."
+
+    if os.path.exists(log_path):
+        with open(log_path, 'r') as f:
+            # Get last 100 lines and join them into one string
+            last_lines = deque(f, maxlen=100)
+            content = "".join(reversed(last_lines))
+    
+    return render_template('log.html', content=content)
