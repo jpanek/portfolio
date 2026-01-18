@@ -9,3 +9,4 @@ jupyter-notebooks/
 *.env
 *.code-workspace
 instance/
+logs/
