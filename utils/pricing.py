@@ -105,77 +105,93 @@ class position:
 """ Function to refresh prices in Database
 --------------------------------------------------------------------- """
 def refresh_prices(history_days=3,symbol=None):
-    start_time = time.time()
-    prices_start_date = (pd.Timestamp.today() - pd.Timedelta(days=history_days)).date()
-    
-    conn = get_db_connection()
-    cur = conn.cursor()
+    with open("logs/cron_log.log", "a") as f:
+            
+        start_time = time.time()
+        print(f"--------------------------------------------------------------------------", file=f, flush=True)
+        print(f"\n--- [MANUAL] Loading of prices started at {pd.Timestamp.today()} ---", file=f, flush=True)
 
-    sqlalchemy_engine = get_sqlalchemy_engine()
+        prices_start_date = (pd.Timestamp.today() - pd.Timedelta(days=history_days)).date()
+        
+        conn = get_db_connection()
+        cur = conn.cursor()
 
-    try:
-        query = "SELECT * FROM instruments"
-        if symbol:
-            query += " where symbol= '"+str(symbol)+"'"
+        sqlalchemy_engine = get_sqlalchemy_engine()
 
-        df = pd.read_sql_query(query, sqlalchemy_engine)
-        i = 0
+        try:
+            query = "SELECT * FROM instruments"
+            if symbol:
+                query += " where symbol= '"+str(symbol)+"'"
 
-        for index, row in df.iterrows():
-            try:
-                handle = position(ticker=row.symbol)
+            df = pd.read_sql_query(query, sqlalchemy_engine)
+            i = 0
 
-                print(f"Loading prices for {row.symbol} starting from date: {prices_start_date}")
+            for index, row in df.iterrows():
+                try:
+                    handle = position(ticker=row.symbol)
 
-                if handle.price is None:
-                    print(f"Skipping {row.symbol} due to missing price data.")
-                    continue
+                    print(f"Loading prices for {row.symbol} starting from date: {prices_start_date}")
+                    print(f"Loading prices for {row.symbol} starting from date: {prices_start_date}", file=f, flush=True)
 
-                prices = handle.get_daily_prices(prices_start_date)
+                    if handle.price is None:
+                        print(f"Skipping {row.symbol} due to missing price data.")
+                        print(f"Skipping {row.symbol} due to missing price data.", file=f, flush=True)
+                        continue
 
-                if prices.empty:
-                    print(f"No historical prices found for {handle.ticker}. Skipping...")
-                    continue
+                    prices = handle.get_daily_prices(prices_start_date)
 
-                # Load the prices into DB
-                j = 0
-                for date, price in prices.items():
-                    if j == len(prices)-1:
-                        cur.execute("""
-                            INSERT INTO prices (symbol, date, price, price_type, updated_date, time)
-                            VALUES (%s, %s, %s, 'Close', CURRENT_TIMESTAMP, %s)
-                            ON CONFLICT (symbol, date, price_type)
-                            DO UPDATE SET 
-                                price = EXCLUDED.price,
-                                updated_date = CURRENT_TIMESTAMP,
-                                time = EXCLUDED.time;
-                        """, (handle.ticker, date.strftime("%Y-%m-%d"), float(handle.price), handle.price_time.to_pydatetime()))
-                    else:
-                        cur.execute("""
-                            INSERT INTO prices (symbol, date, price, price_type, updated_date)
-                            VALUES (%s, %s, %s, 'Close', CURRENT_TIMESTAMP)
-                            ON CONFLICT (symbol, date, price_type)
-                            DO UPDATE SET 
-                                price = EXCLUDED.price,
-                                updated_date = CURRENT_TIMESTAMP;
-                        """, (handle.ticker, date.strftime("%Y-%m-%d"), float(price)))
+                    if prices.empty:
+                        print(f"No historical prices found for {handle.ticker}. Skipping...")
+                        print(f"No historical prices found for {handle.ticker}. Skipping...", file=f, flush=True)
+                        continue
 
-                    i, j = i + 1, j + 1
-                print(f"Loaded {j} prices for ticker {handle.ticker}")
+                    # Load the prices into DB
+                    j = 0
+                    for date, price in prices.items():
+                        if j == len(prices)-1:
+                            cur.execute("""
+                                INSERT INTO prices (symbol, date, price, price_type, updated_date, time)
+                                VALUES (%s, %s, %s, 'Close', CURRENT_TIMESTAMP, %s)
+                                ON CONFLICT (symbol, date, price_type)
+                                DO UPDATE SET 
+                                    price = EXCLUDED.price,
+                                    updated_date = CURRENT_TIMESTAMP,
+                                    time = EXCLUDED.time;
+                            """, (handle.ticker, date.strftime("%Y-%m-%d"), float(handle.price), handle.price_time.to_pydatetime()))
+                        else:
+                            cur.execute("""
+                                INSERT INTO prices (symbol, date, price, price_type, updated_date)
+                                VALUES (%s, %s, %s, 'Close', CURRENT_TIMESTAMP)
+                                ON CONFLICT (symbol, date, price_type)
+                                DO UPDATE SET 
+                                    price = EXCLUDED.price,
+                                    updated_date = CURRENT_TIMESTAMP;
+                            """, (handle.ticker, date.strftime("%Y-%m-%d"), float(price)))
 
-            except Exception as e:
-                print(f"Unexpected error for {row.symbol}: {e}")
+                        i, j = i + 1, j + 1
+                    print(f"Loaded {j} prices for ticker {handle.ticker}")
+                    print(f"Loaded {j} prices for ticker {handle.ticker}", file=f, flush=True)
 
-        print(f"Loaded overall {i} records")
-        conn.commit()
+                except Exception as e:
+                    print(f"Unexpected error for {row.symbol}: {e}")
+                    print(f"Unexpected error for {row.symbol}: {e}", file=f, flush=True)
 
-    except Exception as e:
-        print(f"Database operation failed: {e}")
+            print(f"Loaded overall {i} records")
+            print(f"Loaded overall {i} records", file=f, flush=True)
+            conn.commit()
 
-    finally:
-        conn.close()  # Always closes connection
-        end_time = time.time()
-        run_time = round(end_time - start_time)
-        print(f"Execution time: {run_time} seconds")
+        except Exception as e:
+            print(f"Database operation failed: {e}")
+            print(f"Database operation failed: {e}", file=f, flush=True)
+            conn.rollback()
+
+        finally:
+            conn.close()  # Always closes connection
+            end_time = time.time()
+            run_time = round(end_time - start_time)
+            print(f"Execution time: {run_time} seconds")
+            print(f"Execution time: {run_time} seconds", file=f, flush=True)
+            print(f"\n--- [MANUAL] Finished at {pd.Timestamp.today()} ---", file=f, flush=True)
+
 
     return run_time
