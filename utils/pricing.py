@@ -4,7 +4,10 @@ import pandas as pd
 import yfinance as yf
 import time
 from utils.db import get_db_connection, get_sqlalchemy_engine
+import os
 
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+LOG_FILE = os.path.join(BASE_DIR, 'logs', 'cron_log.log')
 
 """ Main class to handle the Market Position and use Yahoo Finance package 
 --------------------------------------------------------------------- """
@@ -105,7 +108,7 @@ class position:
 """ Function to refresh prices in Database
 --------------------------------------------------------------------- """
 def refresh_prices(history_days=3,symbol=None):
-    with open("logs/cron_log.log", "a") as f:
+    with open(LOG_FILE, "a") as f:
             
         start_time = time.time()
         print(f"--------------------------------------------------------------------------", file=f, flush=True)
