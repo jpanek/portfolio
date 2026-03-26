@@ -1,7 +1,5 @@
-# pricing.py
+# utils/pricing.py
 
-import pandas as pd
-import yfinance as yf
 import time
 from utils.db import get_db_connection, get_sqlalchemy_engine
 import os
@@ -13,6 +11,8 @@ LOG_FILE = os.path.join(BASE_DIR, 'logs', 'cron_log.log')
 --------------------------------------------------------------------- """
 class position:
     def __init__(self, ticker, open_price=0, open_date=None, vol=0, portfolio=None):
+        import yfinance as yf
+
         self.ticker = ticker
         self.open_price = open_price
         self.open_date = open_date
@@ -28,12 +28,14 @@ class position:
         self.handle = yf.Ticker(self.ticker)
 
     def get_info(self):
+        import yfinance as yf
         yf_handle = yf.Ticker(self.ticker)
         self.symbol = yf_handle.info['symbol']
         self.name = yf_handle.info['shortName']
         self.category = yf_handle.info['quoteType']
 
     def get_price(self):
+        import yfinance as yf
         yf_handle = yf.Ticker(self.ticker)
 
         data = yf_handle.history(period="1d",interval='1m')
@@ -50,6 +52,7 @@ class position:
         return self.price
         
     def get_daily_prices(self,start_date=None,price_type="Close"):
+        import yfinance as yf
         yf_handle = yf.Ticker(self.ticker)
         if start_date is None:
             start_date = self.open_date
@@ -58,6 +61,8 @@ class position:
         return prices
         
     def get_monthly_prices(self, price_type="Close"):
+        import yfinance as yf
+        import pandas as pd
         today = pd.Timestamp.today()#.normalize()
         data = yf.download(self.ticker,start = self.open_date, end = today)
         eom_prices = data[price_type].resample('ME').last()
@@ -108,6 +113,9 @@ class position:
 """ Function to refresh prices in Database
 --------------------------------------------------------------------- """
 def refresh_prices(history_days=3,symbol=None):
+    
+    import pandas as pd
+
     with open(LOG_FILE, "a") as f:
             
         start_time = time.time()

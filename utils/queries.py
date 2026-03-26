@@ -1,3 +1,5 @@
+# utils/queries.py
+
 sql_stocks = """
 select 
  t.symbol as Symbol,

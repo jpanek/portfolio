@@ -1,4 +1,4 @@
-# db.py
+# utils/db.py
 import psycopg2
 from sqlalchemy import create_engine
 from config import DevConfig
