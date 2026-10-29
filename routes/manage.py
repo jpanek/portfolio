@@ -249,3 +249,27 @@ def add_trade():
         except Exception as e:
             db.session.rollback()  # Rollback in case of error
             return jsonify({"error": str(e)}), 400
+        
+
+""" Function to edit portfolio """
+@manage_bp.route('/edit_portfolio/<int:portfolio_id>', methods=['POST'])
+@login_required
+def edit_portfolio(portfolio_id):
+    portfolio = Portfolio.query.filter_by(id=portfolio_id, user_id=current_user.id).first()
+    if not portfolio:
+        return jsonify({"error": "Portfolio not found"}), 404
+
+    data = request.get_json()
+    
+    try:
+        portfolio.name = data.get('name', portfolio.name)
+        
+        if 'created_date' in data and data['created_date']:
+            portfolio.created_date = datetime.strptime(data['created_date'], '%Y-%m-%d')
+
+        db.session.commit()
+        return jsonify({"message": "Portfolio updated successfully"})
+        
+    except Exception as e:
+        db.session.rollback()
+        return jsonify({"error": str(e)}), 400

@@ -216,7 +216,7 @@
             created_date: document.getElementById('editPortfolioDate').value
         };
 
-        fetch(`/edit_portfolio/${formData.id}`, {
+        fetch(`/manage/edit_portfolio/${formData.id}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(formData)

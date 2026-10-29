@@ -1,3 +1,5 @@
+# routes/auth.py
+
 from flask import Blueprint, jsonify, request, render_template, flash, redirect, url_for
 from flask_login import login_user, logout_user, login_required, current_user
 from models.models import User

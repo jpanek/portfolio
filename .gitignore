@@ -10,3 +10,4 @@ jupyter-notebooks/
 *.code-workspace
 instance/
 logs/*.log
+.DS_Store
